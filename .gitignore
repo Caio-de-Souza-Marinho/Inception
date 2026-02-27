@@ -1,5 +1,5 @@
-srcs/.env
-secrets/
+secrets/*.txt
 *.log
 *.key
 *.crt
+*.swp

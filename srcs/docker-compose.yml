@@ -1,16 +1,24 @@
-version:        "3.8"
-
 services:
         mariadb:
                 build: ./requirements/mariadb
+                image: mariadb
                 container_name: mariadb
                 env_file:
                         - .env
+                secrets:
+                        - db_password
+                        - db_root_password
                 volumes:
                         - /home/caide-so/data/mariadb:/var/lib/mysql
                 networks:
                         - inception
                 restart: always
+
+secrets:
+        db_password:
+                file: ../secrets/db_password.txt
+        db_root_password:
+                file: ../secrets/db_root_password.txt
 
 networks:
         inception:
