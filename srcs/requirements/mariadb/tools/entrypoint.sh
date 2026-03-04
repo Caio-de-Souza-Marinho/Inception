@@ -15,6 +15,7 @@ if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
 
 	# Start MariaDB in background
 	mysqld --skip-networking --user=mysql &
+	MYSQLD_PID=$!
 
 	# Wait until server is ready
 	until mysqladmin ping --silent; do
@@ -34,6 +35,7 @@ EOF
 
 	# Shutdown temporary server
 	mysqladmin -u root -p${MYSQL_ROOT_PASSWORD} shutdown
+	wait $MYSQLD_PID
 	echo "MariaDB initialized successfully."
 fi
 
