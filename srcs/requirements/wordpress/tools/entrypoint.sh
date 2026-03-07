@@ -40,6 +40,14 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 		--user_pass="${WP_ADMIN_PASSWORD}" \
 		--role=author
 
+	# Configure Redis
+	wp config set --allow-root WP_CACHE true --raw
+	wp config set --allow-root WP_REDIS_HOST "${REDIS_HOST}"
+	wp config set --allow-root WP_REDIS_PORT "${REDIS_PORT}" --raw
+
+	wp plugin install redis-cache --activate --allow-root
+	wp redis enable --allow-root
+
 	echo "WordPress setup complete."
 fi
 
