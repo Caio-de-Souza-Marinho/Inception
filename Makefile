@@ -18,7 +18,10 @@ secrets/wp_admin_password.txt:
 secrets/wp_user_password.txt:
 	@read -s -p "Enter WordPress user password: " pass && echo $$pass > secrets/wp_user_password.txt && echo ""
 
-up: secrets/db_password.txt secrets/db_root_password.txt secrets/wp_admin_password.txt secrets/wp_user_password.txt
+secrets/ftp_password.txt:
+	@read -s -p "Enter FTP password: " pass && echo $$pass > secrets/ftp_password.txt && echo ""
+
+up: secrets/db_password.txt secrets/db_root_password.txt secrets/wp_admin_password.txt secrets/wp_user_password.txt secrets/ftp_password.txt
 	mkdir -p ${MARIADB_PATH}
 	mkdir -p ${WORDPRESS_PATH}
 	docker compose -f srcs/docker-compose.yml up --build -d
