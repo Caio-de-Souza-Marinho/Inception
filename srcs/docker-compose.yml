@@ -78,6 +78,18 @@ services:
                         - inception
                 restart: always
 
+        adminer:
+                build: ./requirements/bonus/adminer
+                image: adminer
+                container_name: adminer
+                ports:
+                        - "8888:8888"
+                networks:
+                        - inception
+                depends_on:
+                        - mariadb
+                restart: always
+
 secrets:
         db_password:
                 file: ../secrets/db_password.txt
