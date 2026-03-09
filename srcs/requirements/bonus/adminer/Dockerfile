@@ -10,6 +10,6 @@ COPY	tools/entrypoint.sh /entrypoint.sh
 
 RUN	chmod +x /entrypoint.sh
 
-EXPOSE	8888
+EXPOSE	8000
 
 ENTRYPOINT	["/entrypoint.sh"]
