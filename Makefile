@@ -36,6 +36,9 @@ fclean: clean
 	sudo rm -rf ${DATA_PATH}
 	rm -f secrets/*txt
 
+prune: fclean
+	docker system prune -af
+
 re: fclean up
 
 .PHONY: all up down clean fclean re

@@ -90,6 +90,19 @@ services:
                         - mariadb
                 restart: always
 
+        portainer:
+                build: ./requirements/bonus/portainer
+                image: portainer
+                container_name: portainer
+                volumes:
+                        - /var/run/docker.sock:/var/run/docker.sock
+                        - portainer_data:/data
+                ports:
+                        - "9000:9000"
+                networks:
+                        - inception
+                restart: always
+
 secrets:
         db_password:
                 file: ../secrets/db_password.txt
@@ -115,6 +128,8 @@ volumes:
                         type: none
                         o: bind
                         device: ${HOME}/data/wordpress
+        portainer_data:
+                driver: local
 
 networks:
         inception:
