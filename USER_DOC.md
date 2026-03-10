@@ -8,7 +8,7 @@ The Inception stack runs the following services:
 |---|---|---|
 | **WordPress** | The main website — a fully functional CMS | https://caide-so.42.fr |
 | **Static website** | A personal profile page | http://caide-so.42.fr |
-| **Adminer** | Database management UI (browser-based) | http://caide-so.42.fr:8888/adminer.php |
+| **Adminer** | Database management UI (browser-based) | http://caide-so.42.fr:8000/adminer.php |
 | **Portainer** | Docker dashboard — view and manage all containers | http://caide-so.42.fr:9000 |
 | **FTP** | File access to the WordPress files | `ftp caide-so.42.fr` (port 21) |
 
@@ -70,7 +70,7 @@ Log in with the WordPress admin credentials (see section below).
 
 ### Adminer (database UI)
 ```
-http://caide-so.42.fr:8888/adminer.php
+http://caide-so.42.fr:8000/adminer.php
 ```
 Use the following to log in:
 - **System:** MySQL
