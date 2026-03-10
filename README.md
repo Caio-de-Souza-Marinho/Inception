@@ -27,6 +27,40 @@ The project enforces a deep understanding of containerization, networking, volum
 - **Portainer** — browser-based Docker management dashboard
 - **Static website** — a personal profile page served on port 80, independent of WordPress
 
+### Diagram
+```mermaid
+graph TD
+    User("🌐 User / Browser")
+
+    User -->|"HTTPS :443"| NGINX
+    User -->|"HTTP :80"| Website
+    User -->|"HTTP :8000"| Adminer
+    User -->|"HTTP :9000"| Portainer
+    User -->|"FTP :21"| FTP
+
+    NGINX -->|"FastCGI :9000"| WordPress
+    WordPress -->|"MySQL :3306"| MariaDB
+    WordPress -->|"Redis :6379"| Redis
+    Adminer -->|"MySQL :3306"| MariaDB
+    FTP -->|"volume"| WPVolume
+    WordPress -->|"volume"| WPVolume
+    Portainer -->|"docker.sock"| DockerDaemon("🐳 Docker Daemon")
+
+    subgraph inception ["Docker Network: inception"]
+        NGINX["NGINX"]
+        WordPress["WordPress + php-fpm"]
+        MariaDB["MariaDB"]
+        Redis["Redis"]
+        FTP["FTP vsftpd"]
+        Adminer["Adminer"]
+        Portainer["Portainer"]
+        Website["Static Website"]
+        WPVolume[("📁 wordpress")]
+        DBVolume[("🗄️ mariadb")]
+        MariaDB -->|"volume"| DBVolume
+    end
+```
+
 ### Design choices
 
 All containers are based on `debian:bullseye`. Passwords are never hardcoded — they are injected at runtime via Docker secrets. Services communicate over a dedicated Docker bridge network named `inception`. Data is persisted using bind-mount volumes stored at `~/data/` on the host machine.
