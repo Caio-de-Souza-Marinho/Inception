@@ -3,9 +3,339 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Inception</title>
+	<title>caide-so @ 42</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--bg: #0a0a0f;
+			--surface: #111118;
+			--border: #1e1e2e;
+			--accent: #00ffe0;
+			--accent2: #7c3aed;
+			--text: #e2e8f0;
+			--muted: #64748b;
+			--card: #13131c;
+		}
+
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+
+		body {
+			background: var(--bg);
+			color: var(--text);
+			font-family: 'Syne', sans-serif;
+			min-height: 100vh;
+			overflow-x: hidden;
+		}
+
+		body::before {
+			content: '';
+			position: fixed;
+			inset: 0;
+			background-image:
+				linear-gradient(rgba(0,255,224,0.03) 1px, transparent 1px),
+				linear-gradient(90deg, rgba(0,255,224,0.03) 1px, transparent 1px);
+			background-size: 48px 48px;
+			pointer-events: none;
+			z-index: 0;
+		}
+
+		body::after {
+			content: '';
+			position: fixed;
+			top: -200px;
+			left: -200px;
+			width: 600px;
+			height: 600px;
+			background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+			pointer-events: none;
+			z-index: 0;
+			animation: orbFloat 12s ease-in-out infinite;
+		}
+
+		@keyframes orbFloat {
+			0%, 100% { transform: translate(0, 0); }
+			33%  { transform: translate(80px, 60px); }
+			66%  { transform: translate(-40px, 100px); }
+		}
+
+		.container {
+			max-width: 860px;
+			margin: 0 auto;
+			padding: 0 2rem;
+			position: relative;
+			z-index: 1;
+		}
+
+		header {
+			padding: 4rem 0 2rem;
+			display: flex;
+			align-items: flex-start;
+			gap: 2.5rem;
+			opacity: 0;
+			animation: fadeUp 0.8s ease forwards 0.1s;
+		}
+
+		.avatar {
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			border: 2px solid var(--accent);
+			object-fit: cover;
+			flex-shrink: 0;
+			display: block;
+		}
+
+		.header-info { padding-top: 0.5rem; }
+
+		.login {
+			font-family: 'Space Mono', monospace;
+			font-size: 0.78rem;
+			color: var(--accent);
+			letter-spacing: 0.15em;
+			margin-bottom: 0.4rem;
+		}
+
+		h1 {
+			font-size: 3rem;
+			font-weight: 800;
+			line-height: 1;
+			letter-spacing: -0.02em;
+			margin-bottom: 0.75rem;
+		}
+
+		.tagline {
+			color: var(--muted);
+			font-size: 0.95rem;
+			line-height: 1.7;
+			max-width: 480px;
+		}
+
+		.tagline span { color: var(--text); }
+
+		.section-label {
+			font-family: 'Space Mono', monospace;
+			font-size: 0.7rem;
+			letter-spacing: 0.2em;
+			color: var(--muted);
+			text-transform: uppercase;
+			margin-bottom: 1rem;
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+		}
+
+		.section-label::after {
+			content: '';
+			flex: 1;
+			height: 1px;
+			background: var(--border);
+		}
+
+		.badge-section {
+			margin: 2rem 0;
+			opacity: 0;
+			animation: fadeUp 0.5s ease forwards 0.3s;
+		}
+
+		.badge-frame {
+			display: block;
+			width: 100%;
+			max-width: 500px;
+			height: 240px;
+			border: none;
+			background: transparent;
+		}
+
+		.skills-section {
+			margin: 2rem 0;
+			opacity: 0;
+			animation: fadeUp 0.8s ease forwards 0.5s;
+		}
+
+		.skills-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+		.skill-tag {
+			font-family: 'Space Mono', monospace;
+			font-size: 0.78rem;
+			padding: 0.4rem 1rem;
+			border: 1px solid var(--border);
+			border-radius: 2px;
+			color: var(--text);
+			background: var(--card);
+			transition: border-color 0.2s, color 0.2s;
+			cursor: default;
+		}
+
+		.skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+		.skill-tag.highlight {
+			border-color: rgba(0,255,224,0.4);
+			color: var(--accent);
+			background: rgba(0,255,224,0.05);
+		}
+
+		.cards-section {
+			margin: 2rem 0;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 1rem;
+			opacity: 0;
+			animation: fadeUp 0.8s ease forwards 0.6s;
+		}
+
+		.card {
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 4px;
+			padding: 1.5rem;
+			transition: border-color 0.2s, transform 0.2s;
+		}
+
+		.card:hover { border-color: rgba(0,255,224,0.3); transform: translateY(-2px); }
+
+		.card-icon { font-size: 1.4rem; margin-bottom: 0.75rem; }
+		.card-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; }
+		.card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+		.links-section {
+			margin: 2rem 0 4rem;
+			display: flex;
+			gap: 1rem;
+			flex-wrap: wrap;
+			opacity: 0;
+			animation: fadeUp 0.8s ease forwards 0.8s;
+		}
+
+		.link-btn {
+			font-family: 'Space Mono', monospace;
+			font-size: 0.78rem;
+			padding: 0.6rem 1.4rem;
+			border: 1px solid var(--border);
+			border-radius: 2px;
+			color: var(--muted);
+			text-decoration: none;
+			background: var(--card);
+			transition: all 0.2s;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			letter-spacing: 0.05em;
+		}
+
+		.link-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,255,224,0.05); }
+		.link-btn.primary { border-color: var(--accent); color: var(--accent); background: rgba(0,255,224,0.08); }
+
+		.footer-line {
+			border-top: 1px solid var(--border);
+			padding: 1.5rem 0;
+			font-family: 'Space Mono', monospace;
+			font-size: 0.7rem;
+			color: var(--muted);
+			display: flex;
+			justify-content: space-between;
+			opacity: 0;
+			animation: fadeUp 0.8s ease forwards 1s;
+		}
+
+		.dot {
+			display: inline-block;
+			width: 6px;
+			height: 6px;
+			background: var(--accent);
+			border-radius: 50%;
+			margin-right: 0.5rem;
+			animation: blink 2s ease-in-out infinite;
+			vertical-align: middle;
+		}
+
+		@keyframes blink {
+			0%, 100% { opacity: 1; }
+			50%       { opacity: 0.2; }
+		}
+
+		@keyframes fadeUp {
+			from { opacity: 0; transform: translateY(20px); }
+			to   { opacity: 1; transform: translateY(0); }
+		}
+
+		@media (max-width: 600px) {
+			header { flex-direction: column; gap: 1.5rem; }
+			h1 { font-size: 2.2rem; }
+			.cards-section { grid-template-columns: 1fr; }
+			.footer-line { flex-direction: column; gap: 0.5rem; }
+		}
+	</style>
 </head>
 <body>
-	<h1>Hello World</h1>
+	<div class="container">
+
+		<header>
+			<img class="avatar" src="https://github.com/Caio-de-Souza-Marinho.png" alt="Caio Marinho" />
+			<div class="header-info">
+				<div class="login">@ caide-so &nbsp;·&nbsp; 42 São Paulo</div>
+				<h1>Caio Marinho</h1>
+				<p class="tagline">
+					25 y/o software engineer. Studying at <span>42 São Paulo</span>
+					, building an <span>ERP at KB Soluções</span>.
+					Low-level to full-stack.
+				</p>
+			</div>
+		</header>
+
+		<div class="badge-section">
+			<div class="section-label">42 stats</div>
+			<iframe
+				class="badge-frame"
+				src="https://badge.mediaplus.ma/greenbinary/caide-so?1337Badge=off&UM6P=off"
+				scrolling="no"
+				title="caide-so 42 stats"
+			></iframe>
+		</div>
+
+		<div class="skills-section">
+			<div class="section-label">skills</div>
+			<div class="skills-grid">
+				<span class="skill-tag highlight">C</span>
+				<span class="skill-tag highlight">C++</span>
+				<span class="skill-tag highlight">C#</span>
+				<span class="skill-tag highlight">Java</span>
+				<span class="skill-tag">JavaScript</span>
+				<span class="skill-tag">TypeScript</span>
+				<span class="skill-tag">Angular</span>
+				<span class="skill-tag">PostgreSQL</span>
+				<span class="skill-tag">SQL Server</span>
+				<span class="skill-tag">Docker</span>
+				<span class="skill-tag">Linux</span>
+				<span class="skill-tag">Lua</span>
+			</div>
+		</div>
+
+		<div class="cards-section">
+			<div class="card">
+				<div class="card-icon">🏗️</div>
+				<div class="card-title">Inception — 42 Project</div>
+				<div class="card-desc">Full Docker infrastructure built from scratch: NGINX, WordPress, MariaDB, Redis, FTP, Adminer, and Portainer. All on debian:bullseye, no pre-built images.</div>
+			</div>
+			<div class="card">
+				<div class="card-icon">💼</div>
+				<div class="card-title">ERP Development</div>
+				<div class="card-desc">Contributing to enterprise resource planning software at KB Soluções — spanning backend services, database design, and frontend interfaces.</div>
+			</div>
+		</div>
+
+		<div class="links-section">
+			<a class="link-btn primary" href="https://github.com/Caio-de-Souza-Marinho" target="_blank">⌥ GitHub</a>
+			<a class="link-btn" href="https://www.linkedin.com/in/caio-de-souza-marinho-9b3b8a233" target="_blank">⌥ LinkedIn</a>
+			<a class="link-btn" href="mailto:caiosouzamarinho@gmail.com">⌥ Email</a>
+		</div>
+
+		<div class="footer-line">
+			<span><span class="dot"></span>caide-so.42.fr</span>
+			<span>42 São Paulo · 2025</span>
+		</div>
+
+	</div>
 </body>
 </html>
