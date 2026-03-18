@@ -45,11 +45,17 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 	wp config set --allow-root WP_REDIS_HOST "${REDIS_HOST}"
 	wp config set --allow-root WP_REDIS_PORT "${REDIS_PORT}" --raw
 
+	wp plugin install classic-editor --activate --allow-root
 	wp plugin install redis-cache --activate --allow-root
+
 	wp redis enable --allow-root
 
 	echo "WordPress setup complete."
 fi
 
+# Fix ownership so www-data can write
+chown -R www-data:www-data /var/www/html
+
 echo "Starting php-fpm..."
+
 exec php-fpm7.4 -F
