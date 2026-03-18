@@ -55,6 +55,7 @@ fi
 
 # Fix ownership so www-data can write
 chown -R www-data:www-data /var/www/html
+chmod -R 775 /var/www/html
 
 echo "Starting php-fpm..."
 

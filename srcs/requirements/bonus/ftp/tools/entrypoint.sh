@@ -11,7 +11,7 @@ mkdir -p /var/run/vsftpd/empty
 if ! id "${FTP_USER}" &>/dev/null; then
 	useradd -m -d /var/www/html "${FTP_USER}"
 	echo "${FTP_USER}:${FTP_PASSWORD}" | chpasswd
-	chown -R "${FTP_USER}:${FTP_USER}" /var/www/html
+	usermod -aG www-data "${FTP_USER}"
 fi
 
 echo "Starting FTP server..."
